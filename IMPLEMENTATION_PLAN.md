@@ -116,23 +116,24 @@ cd android
 
 **步骤：**
 
-- [ ] 为数据库 URL、绑定地址、固定公网 IP、模型基础 URL、模型 API 密钥、模型名称、Gmail 凭据、FCM 项目 ID、FCM 服务账号路径、保留天数和配对限制定义类型化配置字段。
-- [ ] 当缺少生产环境必需密钥或 `MODEL_NAME != gpt-5.6-terra` 时拒绝启动。
-- [ ] 定义与 `BACKEND_STRUCTURE.md` 一致的公开错误码。
-- [ ] 在 `Debug` 实现和日志中遮盖密钥。
-- [ ] 创建 `.env.example`，只包含变量名和安全的虚拟值。
+- [x] 为数据库 URL、绑定地址、固定公网 IP、模型基础 URL、模型 API 密钥、模型名称、Gmail 凭据、FCM 项目 ID、FCM 服务账号路径、保留天数和配对限制定义类型化配置字段。
+- [x] 当缺少生产环境必需密钥或 `MODEL_NAME != gpt-5.6-terra` 时拒绝启动。
+- [x] 定义与 `BACKEND_STRUCTURE.md` 一致的公开错误码。
+- [x] 在 `Debug` 实现和日志中遮盖密钥。
+- [x] 创建 `.env.example`，只包含变量名和安全的虚拟值。
 
 **测试：**
 
-- [ ] 测试缺少生产环境密钥时配置加载失败。
-- [ ] 测试 `Asia/Shanghai`、08:00、23:00 和 30 天均为默认值。
-- [ ] 测试错误序列化结果包含 `error.code`、`message`、`retryable` 和 `request_id`。
+- [x] 测试缺少生产环境密钥时配置加载失败。
+- [x] 测试 `Asia/Shanghai`、08:00、23:00 和 30 天均为默认值。
+- [x] 测试错误序列化结果包含 `error.code`、`message`、`retryable` 和 `request_id`。
 
 **验证：**
 
 ```bash
 cd server
-cargo test --locked config error
+cargo test --locked config
+cargo test --locked error
 ```
 
 ### 任务 2.2：创建数据库迁移与模型
@@ -147,25 +148,26 @@ cargo test --locked config error
 
 **步骤：**
 
-- [ ] 实现 `BACKEND_STRUCTURE.md` 中的每一张表及每一项约束。
-- [ ] 在每个连接上启用 SQLite 外键和 WAL 模式。
-- [ ] 加入所有必需的唯一约束和索引。
-- [ ] 为来源条目、预警、证据、运行记录、通知、设备、配对码和偏好设置实现类型化 Rust 模型。
-- [ ] 加入来源游标事务、预警更新插入、证据插入、通知幂等和保留期清理查询。
+- [x] 实现 `BACKEND_STRUCTURE.md` 中的每一张表及每一项约束。
+- [x] 在每个连接上启用 SQLite 外键和 WAL 模式。
+- [x] 加入所有必需的唯一约束和索引。
+- [x] 为来源条目、预警、证据、运行记录、通知、设备、配对码和偏好设置实现类型化 Rust 模型。
+- [x] 加入来源游标事务、预警更新插入、证据插入、通知幂等和保留期清理查询。
 
 **测试：**
 
-- [ ] 对临时 SQLite 数据库应用迁移。
-- [ ] 将同一个来源条目插入两次，并验证唯一约束生效。
-- [ ] 插入带证据的预警，并验证外键关系。
-- [ ] 将相同的通知去重键插入两次，并验证只接受一条逻辑记录。
+- [x] 对临时 SQLite 数据库应用迁移。
+- [x] 将同一个来源条目插入两次，并验证唯一约束生效。
+- [x] 插入带证据的预警，并验证外键关系。
+- [x] 将相同的通知去重键插入两次，并验证只接受一条逻辑记录。
 
 **验证：**
 
 ```bash
 cd server
 cargo test --locked db
-sqlx migrate run --source migrations --database sqlite://test.db
+sqlx database create --database-url sqlite://test.db
+sqlx migrate run --source migrations --database-url sqlite://test.db
 ```
 
 ### 任务 2.3：实现北京时间调度
@@ -179,25 +181,26 @@ sqlx migrate run --source migrations --database sqlite://test.db
 
 **步骤：**
 
-- [ ] 使用 `chrono-tz` 和 `Asia/Shanghai` 实现 `next_scheduled_run(now_utc) -> Option<DateTime<Utc>>`。
-- [ ] 北京本地时间 00:00 至 07:59 之间不返回计划运行。
-- [ ] 08:00 至 22:59 返回下一个整点运行，并将 23:00 包含为当天最后一次运行。
-- [ ] 将 08:00 补查窗口生成为：前一个本地自然日 00:00:00（含）至当前本地自然日 08:00:00（不含）。
-- [ ] 实现手动运行受理机制，设置五分钟频率限制，并复用正在执行的运行。
+- [x] 使用 `chrono-tz` 和 `Asia/Shanghai` 实现 `next_scheduled_run(now_utc) -> Option<DateTime<Utc>>`。
+- [x] 北京本地时间 00:00 至 07:59 之间不返回计划运行。
+- [x] 08:00 至 22:59 返回下一个整点运行，并将 23:00 包含为当天最后一次运行。
+- [x] 将 08:00 补查窗口生成为：前一个本地自然日 00:00:00（含）至当前本地自然日 08:00:00（不含）。
+- [x] 实现手动运行受理机制，设置五分钟频率限制，并复用正在执行的运行。
 
 **测试：**
 
-- [ ] 测试 07:59:59 返回 08:00 运行。
-- [ ] 测试当前 08:00 运行被受理后，08:00 返回下一次 09:00 运行。
-- [ ] 测试 23:00 不返回当天更晚的运行，并返回次日 08:00 运行。
-- [ ] 测试跨月和跨年时 08:00 补查窗口边界。
-- [ ] 测试手动检查频率限制和重复运行复用。
+- [x] 测试 07:59:59 返回 08:00 运行。
+- [x] 测试当前 08:00 运行被受理后，08:00 返回下一次 09:00 运行。
+- [x] 测试 23:00 不返回当天更晚的运行，并返回次日 08:00 运行。
+- [x] 测试跨月和跨年时 08:00 补查窗口边界。
+- [x] 测试手动检查频率限制和重复运行复用。
 
 **验证：**
 
 ```bash
 cd server
-cargo test --locked scheduler time
+cargo test --locked scheduler
+cargo test --locked time
 ```
 
 ## 3. 来源适配器与证据规范化
