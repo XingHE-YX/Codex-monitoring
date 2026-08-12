@@ -1,5 +1,5 @@
 项目：Codex 重置预警
-状态：规范文档与代理规范已建立，首个 GitHub 基线提交准备中，尚未开始编码实现
+状态：规范文档与代理规范已建立，首个 GitHub 基线提交已推送，尚未开始编码实现
 当前阶段：项目初始化前
 最近更新：2026-08-12
 
@@ -24,8 +24,8 @@
 - 已确认 AGENT.md 必需章节、规范引用、Material 3 令牌引用和安全禁令均存在。
 - 已确认未发现 TBD/TODO/FIXME 等未完成标记，未发现未带 `/api` 前缀的项目 API 路径，所有 Markdown 代码围栏成对。
 - 已完成首个 GitHub 提交前的敏感文件名与常见密钥模式扫描，未发现疑似敏感内容。
+- 已将项目基线提交推送至 `https://github.com/XingHE-YX/Codex-monitoring.git` 的 `main` 分支。
 - 尚未运行应用构建或后端测试，因为代码尚未创建。
 
 下一步：
-- 完成首个 GitHub 基线提交并推送到 `main`。
 - 新会话开始时先完整阅读本文件和 lessons.md，再执行 IMPLEMENTATION_PLAN.md 的任务 1.1。
