@@ -1,6 +1,6 @@
 项目：Codex 重置预警
-状态：规范文档与代理规范已建立，项目初始化与依赖安装已完成，业务功能尚未开始实现
-当前阶段：后端基础前置工作已完成，待开始任务 2.1
+状态：IMPLEMENTATION_PLAN.md 步骤 2 的后端基础功能与全量验证已完成
+当前阶段：任务 2.1、2.2、2.3 已完成，待开始步骤 3
 最近更新：2026-08-12
 
 已完成：
@@ -13,9 +13,12 @@
 - 已使用 Cargo 初始化 Rust 服务端，锁定 Rust `1.89.0`、edition 2024、包版本 `1.0.0`，安装 TECH_STACK.md 规定的精确直接依赖并生成 `server/Cargo.lock`。
 - 已使用 Gradle 初始化 Android 工程并生成 Gradle Wrapper `8.13`，配置 AGP `8.13.0`、Kotlin/Compose 编译器 `2.2.21`、Compose BOM `2025.10.00`、Firebase BOM `34.3.0`、compile/target SDK `36`、min SDK `28` 和 NDK `27.2.12479018`。
 - 已创建包名为 `com.xingheluqi.codexresetwatch` 的最小 Compose 应用、Manifest、禁用明文流量的网络安全配置和本地凭据忽略规则。
+- 已完成任务 2.1：定义类型化后端配置、生产环境必需值校验、固定模型校验、公开错误封装、密钥脱敏与安全 `.env.example`。
+- 已完成任务 2.2：创建 12 张 SQLite 表及约束/索引、类型化数据库模型、连接与迁移入口、来源游标事务、预警更新插入、证据插入、通知幂等和保留期清理查询。
+- 已完成任务 2.3：实现 `Asia/Shanghai` 整点调度、08:00 跨自然日补查窗口，以及五分钟限流并复用活动运行的手动运行门控。
 
 待办：
-- 按 IMPLEMENTATION_PLAN.md 任务 2.1 定义后端配置、类型化错误和 `.env.example`。
+- 按 IMPLEMENTATION_PLAN.md 步骤 3 实现来源适配器与证据规范化。
 - 完成 Rust 后端、Android 客户端、部署配置和真机验收。
 
 阻塞项：
@@ -32,6 +35,13 @@
 - `android`：`./gradlew --version` 确认为 Gradle `8.13` / JDK `21.0.8`，`./gradlew :app:assembleDebug` 构建成功，`./gradlew :app:testDebugUnitTest` 成功（当前无测试源码，任务为 `NO-SOURCE`）。
 - 已运行 `find server android contracts infra scripts -maxdepth 2 -type d -print`、`git diff --check` 和敏感/构建路径忽略规则检查，均无错误；构建产生的 `server/target/`、`android/.gradle/`、`android/.kotlin/` 和 `android/app/build/` 未纳入版本控制。
 - Android 构建出现 SDK XML 版本兼容性警告（命令行工具遇到 XML v4），但本次构建和测试均成功；后续 Android Studio/命令行工具升级时需复核。
+- `server` 任务 2.1：`cargo test --locked config` 通过（4 个测试），`cargo test --locked error` 通过（1 个测试），`cargo check --locked` 通过。
+- `server` 任务 2.2：`cargo test --locked db` 通过（5 个测试）；SQLx CLI `0.8.6` 已安装，`0001_initial.sql` 已成功应用到测试 SQLite 数据库。
+- `server` 任务 2.3：`cargo test --locked scheduler` 通过（5 个测试），`cargo test --locked time` 通过（2 个匹配测试）。
+- `server` 步骤 2 全量验证：`cargo fmt --all -- --check` 通过，`cargo clippy --locked --all-targets -- -D warnings` 通过，`cargo test --locked` 通过（16 个测试、0 失败）。
+- 已使用 `sqlx database reset -y --source migrations --database-url sqlite://test.db` 从空测试数据库重建并成功应用 `0001_initial.sql`。
+- `android` 回归验证：使用现有 Temurin JDK `21.0.8` 与 Android SDK 执行 `./gradlew :app:assembleDebug :app:testDebugUnitTest`，构建成功（单元测试仍为 `NO-SOURCE`）。
+- 已执行 `git diff --check`、运行时/凭据文件忽略规则检查和常见真实密钥模式扫描，均未发现错误或敏感信息。
 
 下一步：
-- 新会话开始时先完整阅读本文件和 lessons.md，再执行 IMPLEMENTATION_PLAN.md 的任务 2.1。
+- 继续执行 IMPLEMENTATION_PLAN.md 的步骤 3：来源适配器与证据规范化。

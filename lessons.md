@@ -9,3 +9,5 @@
 - 真实凭据只能通过受保护的部署配置注入，不能进入代码、日志、文档、状态文件或版本库。
 - `jsonwebtoken` `9.3.1` 不支持 `rust_crypto` feature；启用 PEM/RSA 支持应使用 `default-features = false` 与 `features = ["use_pem"]`。
 - Gradle `8.13` 版本目录别名包含 `class` 时会被视为保留别名，Compose 的 `material3-window-size-class` 构件应使用不含 `class` 的目录别名。
+- `cargo test` 一次只接受一个名称过滤参数；需要验证多个模块时应分别执行，例如 `cargo test --locked scheduler` 与 `cargo test --locked time`。
+- SQLx CLI `0.8.6` 使用 `--database-url` 参数；首次验证 SQLite 文件迁移时先执行 `sqlx database create`，再执行 `sqlx migrate run`。
