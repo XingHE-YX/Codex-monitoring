@@ -1,0 +1,31 @@
+项目：Codex 重置预警
+状态：规范文档与代理规范已建立，首个 GitHub 基线提交准备中，尚未开始编码实现
+当前阶段：项目初始化前
+最近更新：2026-08-12
+
+已完成：
+- 已建立 PRD.md、APP_FLOW.md、TECH_STACK.md、FRONTEND_GUIDELINES.md、BACKEND_STRUCTURE.md、IMPLEMENTATION_PLAN.md。
+- 已将六份规范文档统一为简体中文，保留必要技术标识、API 路径、代码符号和版本号。
+- 已建立 AGENT.md，定义会话启动、目录命名、编码模式、Material 3 令牌、安全禁令和规范引用规则。
+- 已创建本状态文件与 lessons.md。
+- 已创建 README.md 作为项目入口和 .gitignore 作为凭据/构建产物保护规则。
+
+待办：
+- 按 IMPLEMENTATION_PLAN.md 任务 1.1 初始化 server/、android/、contracts/、infra/、scripts/ 目录。
+- 在实现前核对 TECH_STACK.md 中的版本是否仍适用于实际开发环境。
+- 完成 Rust 后端、Android 客户端、部署配置和真机验收。
+
+阻塞项：
+- 暂无已记录阻塞项。
+
+最近验证：
+- 已检查六份规范文档和 AGENT.md 的标题、文件存在性及关键接口前缀。
+- 已确认 AGENT.md、progress.txt、lessons.md 及六份规范文档均为非空有效 UTF-8 文件。
+- 已确认 AGENT.md 必需章节、规范引用、Material 3 令牌引用和安全禁令均存在。
+- 已确认未发现 TBD/TODO/FIXME 等未完成标记，未发现未带 `/api` 前缀的项目 API 路径，所有 Markdown 代码围栏成对。
+- 已完成首个 GitHub 提交前的敏感文件名与常见密钥模式扫描，未发现疑似敏感内容。
+- 尚未运行应用构建或后端测试，因为代码尚未创建。
+
+下一步：
+- 完成首个 GitHub 基线提交并推送到 `main`。
+- 新会话开始时先完整阅读本文件和 lessons.md，再执行 IMPLEMENTATION_PLAN.md 的任务 1.1。

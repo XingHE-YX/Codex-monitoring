@@ -1,0 +1,47 @@
+# 环境变量与本地凭据
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+google-services.json
+firebase-service-account*.json
+*-service-account*.json
+
+# Rust 构建产物
+server/target/
+
+# Android/Gradle 本地文件与构建产物
+android/.gradle/
+android/local.properties
+android/build/
+android/app/build/
+android/app/.cxx/
+*.apk
+*.aab
+
+# 数据库、日志和运行时文件
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.log
+
+# 部署私钥与证书私密材料
+infra/certbot/live/
+infra/certbot/archive/
+infra/certbot/renewal/
+*.key
+*.pem
+
+# 操作系统与编辑器文件
+.DS_Store
+.idea/
+*.iml
+.vscode/
+
+# 本地工具状态与临时文件
+.superpowers/
+tmp/
+temp/
